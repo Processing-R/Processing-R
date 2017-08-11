@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html> 
     <head>
-        <title>mouseButton \ Language (API)</title>
+        <title>mousePressedVar \ Language (API)</title>
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="Author" content="Ce Gao" />
@@ -35,24 +35,19 @@
                 <table cellpadding="0" cellspacing="0" border="0" class="ref-item">
     <tr class="name-row">
         <th scope="row">Name</th>
-        <td><h3>mouseButton</h3></td>
+        <td><h3>mousePressedVar</h3></td>
     </tr>
 
             <tr class=""><th scope="row">Examples</th><td>
-                    <div class="example">                <pre># Click within the image and press the left and right mouse buttons to change the
-# value of the rectangle
-draw &lt;- function() {
-    rect(25, 25, 50, 50)
-}
+                    <div class="example">                <pre># Click within the image to change the value of the rectangle
 
-mousePressed &lt;- function() {
-    if (mouseButton == LEFT) {
+draw &lt;- function() {
+    if (mousePressedVar == TRUE) {
         fill(0)
-    } else if (mouseButton == RIGHT) {
-        fill(255)
     } else {
-        fill(126)
+        fill(255)
     }
+    rect(25, 25, 50, 50)
 }
 </pre>
             </div>
@@ -61,7 +56,7 @@ mousePressed &lt;- function() {
     <tr class="">
         <th scope="row">Description</th>
         <td>
-             When a mouse button is pressed, the value of the system variable <b>mouseButton</b> is set to either <b>LEFT</b>, <b>RIGHT</b>, or <b>CENTER</b>, depending on which button is pressed. (If no button is pressed, <b>mouseButton</b> may be reset to <b>0</b>. For that reason, it's best to use <b>mousePressed</b> first to test if any button is being pressed, and only then test the value of <b>mouseButton</b>, as shown in the examples above.) 
+             The <b>mousePressedVar</b> variable stores whether or not a mouse button is currently being pressed. The value is true when any mouse button is pressed, and false if no button is pressed. The <b>mouseButton</b> variable (see the related reference entry) can be used to determine which button has been pressed. 
         </td>
     </tr>
 
@@ -76,12 +71,12 @@ mousePressed &lt;- function() {
                     <a class="code" href="./mouseY.html">mouseY</a><br />
                     <a class="code" href="./pmouseX.html">pmouseX</a><br />
                     <a class="code" href="./pmouseY.html">pmouseY</a><br />
-                    <a class="code" href="./mousePressed_var.html">mousePressed_var</a><br />
                     <a class="code" href="./mousePressed.html">mousePressed</a><br />
                     <a class="code" href="./mouseReleased.html">mouseReleased</a><br />
                     <a class="code" href="./mouseClicked.html">mouseClicked</a><br />
                     <a class="code" href="./mouseMoved.html">mouseMoved</a><br />
                     <a class="code" href="./mouseDragged.html">mouseDragged</a><br />
+                    <a class="code" href="./mouseButtonVar.html">mouseButtonVar</a><br />
                     <a class="code" href="./mouseWheel.html">mouseWheel</a><br />
             </table>
 

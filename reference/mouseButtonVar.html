@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html> 
     <head>
-        <title>mousePressed \ Language (API)</title>
+        <title>mouseButtonVar \ Language (API)</title>
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="Author" content="Ce Gao" />
@@ -35,25 +35,38 @@
                 <table cellpadding="0" cellspacing="0" border="0" class="ref-item">
     <tr class="name-row">
         <th scope="row">Name</th>
-        <td><h3>mousePressed</h3></td>
+        <td><h3>mouseButtonVar</h3></td>
     </tr>
 
             <tr class=""><th scope="row">Examples</th><td>
-                    <div class="example">                <pre># Click within the image to change the value of the rectangle
-
-value &lt;- 0
-
+                    <div class="example">                <pre># Click within the image and press the left and right mouse buttons to change the
+# value of the rectangle
 draw &lt;- function() {
-    fill(value)
     rect(25, 25, 50, 50)
 }
 
 mousePressed &lt;- function() {
-    if (value == 0) {
-        value &lt;- 255
+    if (mouseButtonVar == LEFT) {
+        fill(0)
+    } else if (mouseButtonVar == RIGHT) {
+        fill(255)
     } else {
-        value &lt;- 0
+        fill(126)
     }
+}
+</pre>
+            </div>
+                                <div class="example">                <pre># Click within the image and press the left and right mouse buttons to change the
+# value of the rectangle
+draw &lt;- function() {
+    if (mousePressedVar &amp;&amp; (mouseButtonVar == LEFT)) {
+        fill(0)
+    } else if (mousePressedVar &amp;&amp; (mouseButtonVar == RIGHT)) {
+        fill(255)
+    } else {
+        fill(126)
+    }
+    rect(25, 25, 50, 50)
 }
 </pre>
             </div>
@@ -62,12 +75,11 @@ mousePressed &lt;- function() {
     <tr class="">
         <th scope="row">Description</th>
         <td>
-             The <b>mousePressed()</b> function is called once after every time a mouse button is pressed. The <b>mouseButton</b> variable (see the related reference entry) can be used to determine which button has been pressed. <br/><br/> Mouse and keyboard events only work when a program has <b>draw()</b>. Without <b>draw()</b>, the code is only run once and then stops listening for events. 
+             When a mouse button is pressed, the value of the system variable <b>mouseButton</b> is set to either <b>LEFT</b>, <b>RIGHT</b>, or <b>CENTER</b>, depending on which button is pressed. (If no button is pressed, <b>mouseButton</b> may be reset to <b>0</b>. For that reason, it's best to use <b>mousePressed</b> first to test if any button is being pressed, and only then test the value of <b>mouseButton</b>, as shown in the examples above.) 
         </td>
     </tr>
 
-             <tr class=""><th scope="row">Syntax</th><td><pre>mousePressed()
-mousePressed(event)</pre></td></tr>
+             <tr class=""><th scope="row">Syntax</th><td><pre></pre></td></tr>
     
     
     
@@ -79,11 +91,11 @@ mousePressed(event)</pre></td></tr>
                     <a class="code" href="./pmouseX.html">pmouseX</a><br />
                     <a class="code" href="./pmouseY.html">pmouseY</a><br />
                     <a class="code" href="./mousePressed_var.html">mousePressed_var</a><br />
+                    <a class="code" href="./mousePressed.html">mousePressed</a><br />
                     <a class="code" href="./mouseReleased.html">mouseReleased</a><br />
                     <a class="code" href="./mouseClicked.html">mouseClicked</a><br />
                     <a class="code" href="./mouseMoved.html">mouseMoved</a><br />
                     <a class="code" href="./mouseDragged.html">mouseDragged</a><br />
-                    <a class="code" href="./mouseButton.html">mouseButton</a><br />
                     <a class="code" href="./mouseWheel.html">mouseWheel</a><br />
             </table>
 
