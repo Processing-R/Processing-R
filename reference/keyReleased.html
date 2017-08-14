@@ -22,7 +22,7 @@
             <div id="navigation">
                 <div class="navBar" id="mainnav">
                     <a href="/">Cover</a><br/>
-                    <a href="reference/index.html">Reference</a><br/>
+                    <a href="/reference/">Reference</a><br/>
                     <!-- <a href="/tutorials/">Tutorials</a><br/>
                     <a href="/examples/">Examples</a><br/> -->
                     <a href="https://github.com/gaocegege/Processing.R/issues">Bugs</a>
@@ -38,6 +38,26 @@
         <td><h3>keyReleased</h3></td>
     </tr>
 
+            <tr class=""><th scope="row">Examples</th><td>
+                    <div class="example">                <pre># Click on the image to give it focus, and then press any key.
+
+value &lt;- 0
+
+draw &lt;- function() {
+    fill(value)
+    rect(25, 25, 50, 50)
+}
+
+keyReleased &lt;- function() {
+    if (value == 0) {
+        value = 255
+    } else {
+        value = 0
+    }
+}
+</pre>
+            </div>
+                            </tr>
     
     <tr class="">
         <th scope="row">Description</th>

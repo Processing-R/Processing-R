@@ -22,7 +22,7 @@
             <div id="navigation">
                 <div class="navBar" id="mainnav">
                     <a href="/">Cover</a><br/>
-                    <a href="reference/index.html">Reference</a><br/>
+                    <a href="/reference/">Reference</a><br/>
                     <!-- <a href="/tutorials/">Tutorials</a><br/>
                     <a href="/examples/">Examples</a><br/> -->
                     <a href="https://github.com/gaocegege/Processing.R/issues">Bugs</a>
@@ -38,6 +38,29 @@
         <td><h3>keyCode</h3></td>
     </tr>
 
+            <tr class=""><th scope="row">Examples</th><td>
+                    <div class="example">                <pre>fillVal &lt;- 126
+
+draw &lt;- function() {
+    fill(fillVal)
+    rect(25, 25, 50, 50)
+}
+
+keyPressed &lt;- function() {
+    # See https://github.com/gaocegege/Processing.R/issues/209
+    if (key == CODED) {
+        if (keyCode == UP) {
+            fillVal = 255
+        } else if (keyCode == DOWN) {
+            fillVal = 0
+        }
+    } else {
+        fillVal = 126
+    }
+}
+</pre>
+            </div>
+                            </tr>
     
     <tr class="">
         <th scope="row">Description</th>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html> 
     <head>
-        <title>keyPressed_var \ Language (API)</title>
+        <title>keyPressedVar \ Language (API)</title>
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="Author" content="Ce Gao" />
@@ -22,7 +22,7 @@
             <div id="navigation">
                 <div class="navBar" id="mainnav">
                     <a href="/">Cover</a><br/>
-                    <a href="reference/index.html">Reference</a><br/>
+                    <a href="/reference/">Reference</a><br/>
                     <!-- <a href="/tutorials/">Tutorials</a><br/>
                     <a href="/examples/">Examples</a><br/> -->
                     <a href="https://github.com/gaocegege/Processing.R/issues">Bugs</a>
@@ -35,14 +35,31 @@
                 <table cellpadding="0" cellspacing="0" border="0" class="ref-item">
     <tr class="name-row">
         <th scope="row">Name</th>
-        <td><h3>keyPressed_var</h3></td>
+        <td><h3>keyPressedVar</h3></td>
     </tr>
 
+            <tr class=""><th scope="row">Examples</th><td>
+                    <div class="example">                <pre># Click on the image to give it focus, and then press any key.
+
+# Note: The rectangle in this example may flicker as the operating system may
+# register a long key press as a repetition of key presses.
+
+draw &lt;- function() {
+    if (keyPressedVar == TRUE) {
+        fill(0)
+    } else {
+        fill(255)
+    }
+    rect(25, 25, 50, 50)
+}
+</pre>
+            </div>
+                            </tr>
     
     <tr class="">
         <th scope="row">Description</th>
         <td>
-             The Boolean system variable <b>keyPressed</b> is <b>True</b> if any key is pressed and <b>False</b> if no keys are pressed. 
+             The Boolean system variable <b>keyPressed</b> is <b>TRUE</b> if any key is pressed and <b>FALSE</b> if no keys are pressed. 
         </td>
     </tr>
 
@@ -55,7 +72,7 @@
         <tr><th scope="row">Related</th><td class="code">
                     <a class="code" href="./key.html">key</a><br />
                     <a class="code" href="./keyCode.html">keyCode</a><br />
-                    <a class="code" href="./keyPressed_var.html">keyPressed_var</a><br />
+                    <a class="code" href="./keyPressed.html">keyPressed</a><br />
                     <a class="code" href="./keyReleased.html">keyReleased</a><br />
             </table>
 

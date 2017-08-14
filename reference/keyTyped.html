@@ -22,7 +22,7 @@
             <div id="navigation">
                 <div class="navBar" id="mainnav">
                     <a href="/">Cover</a><br/>
-                    <a href="reference/index.html">Reference</a><br/>
+                    <a href="/reference/">Reference</a><br/>
                     <!-- <a href="/tutorials/">Tutorials</a><br/>
                     <a href="/examples/">Examples</a><br/> -->
                     <a href="https://github.com/gaocegege/Processing.R/issues">Bugs</a>
@@ -38,6 +38,32 @@
         <td><h3>keyTyped</h3></td>
     </tr>
 
+            <tr class=""><th scope="row">Examples</th><td>
+                    <div class="example">                <pre># Run this program to learn how each of these functions relate to the others.
+
+draw &lt;- function() {
+}  # Empty draw() needed to keep the program running
+
+keyPressed &lt;- function() {
+    print(&#34;keyPressed&#34;)
+    print(keyCode)
+    print(key)
+}
+
+keyTyped &lt;- function() {
+    print(&#34;keyTyped&#34;)
+    print(keyCode)
+    print(key)
+}
+
+keyReleased &lt;- function() {
+    print(&#34;keyReleased&#34;)
+    print(keyCode)
+    print(key)
+}
+</pre>
+            </div>
+                            </tr>
     
     <tr class="">
         <th scope="row">Description</th>

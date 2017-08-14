@@ -22,7 +22,7 @@
             <div id="navigation">
                 <div class="navBar" id="mainnav">
                     <a href="/">Cover</a><br/>
-                    <a href="reference/index.html">Reference</a><br/>
+                    <a href="/reference/">Reference</a><br/>
                     <!-- <a href="/tutorials/">Tutorials</a><br/>
                     <a href="/examples/">Examples</a><br/> -->
                     <a href="https://github.com/gaocegege/Processing.R/issues">Bugs</a>
@@ -38,6 +38,22 @@
         <td><h3>key</h3></td>
     </tr>
 
+            <tr class=""><th scope="row">Examples</th><td>
+                    <div class="example">                <pre># Click on the window to give it focus, and press the &#39;B&#39; key.
+
+draw &lt;- function() {
+    if (keyPressedVar == TRUE) {
+        if (key == &#34;b&#34; || key == &#34;B&#34;) {
+            fill(0)
+        }
+    } else {
+        fill(255)
+    }
+    rect(25, 25, 50, 50)
+}
+</pre>
+            </div>
+                            </tr>
     
     <tr class="">
         <th scope="row">Description</th>
