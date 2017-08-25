@@ -38,6 +38,36 @@
         <td><h3>map</h3></td>
     </tr>
 
+            <tr class=""><th scope="row">Examples</th><td>
+                    <div class="example">                <pre>size(200, 200)
+value = 25
+m = map(value, 0, 100, 0, width)
+ellipse(m, 200, 10, 10)
+</pre>
+            </div>
+                                <div class="example">                <pre>value = 110
+m = map(value, 0, 100, -20, -10)
+println(m)  # Prints &#39;-9.0&#39;
+</pre>
+            </div>
+                                <div class="example">                <pre>settings &lt;- function() {
+    size(200, 200)
+}
+
+setup &lt;- function() {
+    noStroke()
+}
+
+draw &lt;- function() {
+    background(204)
+    x1 = map(mouseX, 0, width, 50, 150)
+    ellipse(x1, 75, 50, 50)
+    x2 = map(mouseX, 0, width, 0, 200)
+    ellipse(x2, 125, 50, 50)
+}
+</pre>
+            </div>
+                            </tr>
     
     <tr class="">
         <th scope="row">Description</th>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html> 
     <head>
-        <title>minus \ Language (API)</title>
+        <title>operators \ Language (API)</title>
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="Author" content="Ce Gao" />
@@ -35,32 +35,36 @@
                 <table cellpadding="0" cellspacing="0" border="0" class="ref-item">
     <tr class="name-row">
         <th scope="row">Name</th>
-        <td><h3>minus</h3></td>
+        <td><h3>operators</h3></td>
     </tr>
 
     
     <tr class="">
         <th scope="row">Description</th>
         <td>
-             Subtracts one value from another and may also be used to negate a value. As a subtraction operator, the value of the second parameter is subtracted from the first. For example, 5 - 3 yields the number 2. As a negation operator, it is equivalent to multiplying a number by -1. For example, -5 is the same as 5 * -1. 
+             The unary and binary arithmetic operators are generic functions: methods can be written for them individually or via the Ops group generic function. (See Ops for how dispatch is computed.)<br /> <br /> If applied to arrays the result will be an array if this is sensible (for example it will not if the recycling rule has been invoked).<br /> <br /> Logical vectors will be coerced to integer or numeric vectors, FALSE having value zero and TRUE having value one.<br /> <br /> 1 ^ y and y ^ 0 are 1, always. x ^ y should also give the proper limit result when either (numeric) argument is infinite (one of Inf or -Inf).<br /> <br /> Objects such as arrays or time-series can be operated on this way provided they are conformable.<br /> <br /> For double arguments, %% can be subject to catastrophic loss of accuracy if x is much larger than y, and a warning is given if this is detected.<br /> <br /> %% and x %/% y can be used for non-integer y, e.g. 1 %/% 0.2, but the results are subject to representation error and so may be platform-dependent. Because the IEC 60059 representation of 0.2 is a binary fraction slightly larger than 0.2, the answer to 1 %/% 0.2 should be 4 but most platforms give 5.<br /> <br /> Users are sometimes surprised by the value returned, for example why (-8)^(1/3) is NaN. For double inputs, R makes use of IEC 60559 arithmetic on all platforms, together with the C system function pow for the ^ operator. The relevant standards define the result in many corner cases. In particular, the result in the example above is mandated by the C99 standard. On many Unix-alike systems the command man pow gives details of the values in a large number of corner cases.<br /> <br /> Arithmetic on type double in R is supposed to be done in ‘round to nearest, ties to even’ mode, but this does depend on the compiler and FPU being set up correctly.<br /> 
         </td>
     </tr>
 
-             <tr class=""><th scope="row">Syntax</th><td><pre>-<c>value1</c>
-<c>value1</c> - <c>value2</c></pre></td></tr>
+             <tr class=""><th scope="row">Syntax</th><td><pre>+ x
+ - x
+ x + y
+ x - y
+ x * y
+ x / y
+ x ^ y
+ x %% y
+ x %/% y
+</pre></td></tr>
     
             <tr class=""><th scope="row">Parameters</th><td><table cellpadding="0" cellspacing="0" border="0">                
-                    <tr class=""><th scope="row" class="code">value1</th><td>int or float</td></tr>
-                    <tr class=""><th scope="row" class="code">value2</th><td>int or float</td></tr>
+                    <tr class=""><th scope="row" class="code">x, y</th><td>numeric or complex vectors or objects which can be coerced to such, or other objects for which methods have been written.</td></tr>
                 </table></tr>
     
     
     
     
-        <tr><th scope="row">Related</th><td class="code">
-                    <a class="code" href="./subtractassign.html">subtractassign</a><br />
-                    <a class="code" href="./addition.html">addition</a><br />
-            </table>
+    </table>
 
 
                 <!-- Creative Commons License -->

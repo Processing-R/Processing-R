@@ -38,6 +38,20 @@
         <td><h3>dist</h3></td>
     </tr>
 
+            <tr class=""><th scope="row">Examples</th><td>
+                    <div class="example">                <pre># Sets the background gray value based on the distance of the mouse from the
+# center of the screen
+draw &lt;- function() {
+    noStroke()
+    d = dist(width/2, height/2, mouseX, mouseY)
+    maxDist = dist(0, 0, width/2, height/2)
+    gray = map(d, 0, maxDist, 0, 255)
+    fill(gray)
+    rect(0, 0, width, height)
+}
+</pre>
+            </div>
+                            </tr>
     
     <tr class="">
         <th scope="row">Description</th>

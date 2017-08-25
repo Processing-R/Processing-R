@@ -38,6 +38,22 @@
         <td><h3>noiseSeed</h3></td>
     </tr>
 
+            <tr class=""><th scope="row">Examples</th><td>
+                    <div class="example">                <pre>xoff &lt;- 0
+
+setup &lt;- function() {
+    noiseSeed(0)
+    stroke(0, 10)
+}
+
+draw &lt;- function() {
+    xoff = xoff + 0.01
+    n = noise(xoff) * width
+    line(n, 0, n, height)
+}
+</pre>
+            </div>
+                            </tr>
     
     <tr class="">
         <th scope="row">Description</th>

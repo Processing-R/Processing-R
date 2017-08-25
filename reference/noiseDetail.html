@@ -38,6 +38,28 @@
         <td><h3>noiseDetail</h3></td>
     </tr>
 
+            <tr class=""><th scope="row">Examples</th><td>
+                    <div class="example">                <pre>noiseVal &lt;- NULL
+noiseScale &lt;- 0.02
+
+draw &lt;- function() {
+    for (y in 0:height) {
+        for (x in 0:width/2) {
+            noiseDetail(3, 0.5)
+            noiseVal = noise((mouseX + x) * noiseScale, (mouseY + y) * noiseScale)
+            stroke(noiseVal * 255)
+            point(x, y)
+            noiseDetail(8, 0.65)
+            noiseVal = noise((mouseX + x + width/2) * noiseScale, (mouseY + y) * 
+                noiseScale)
+            stroke(noiseVal * 255)
+            point(x + width/2, y)
+        }
+    }
+}
+</pre>
+            </div>
+                            </tr>
     
     <tr class="">
         <th scope="row">Description</th>
