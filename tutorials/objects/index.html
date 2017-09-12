@@ -43,7 +43,7 @@
 <p>Frequently, the same pieces of data and function are used repeatedly as a group--to simulate a moving ball for example, we will have data on the ball's location (x and y), its speed (how many pixels it will move in the x and y direction in the next timestep), a radius, and maybe something like an ID string. A function like <code>move()</code> would take the position and speed data, and update the position. A function like <code>display()</code> needs position information and the radius to draw the ball.</p>
 <p>An <strong>object</strong> is a more formal way to group all of these pieces together. Objects are not strictly necessary for writing programs, but by organizing related data and functions they can simplify the process considerably. </p>
 <p>We'll often talk about <strong>classes</strong> as well--a class is the "blueprint" for potentially many objects of the same type. The objects themselves are the actual collections of data built from the class template. Let's consider our ball example, a <code>Ball</code> class is code that specifies that all <code>Ball</code> objects must have an <code>xloc</code>, <code>yloc</code>, <code>xspeed</code>, <code>yspeed</code>, <code>radius</code>, and <code>id</code>, as well as a function <code>display()</code> and a function <code>move()</code>. </p>
-<p><img alt="A Ball class is like a general diagram, individual Ball objects are concrete instances of that class" src="imgs/ball_class_and_objects.png" /></p>
+<p><img src="imgs/ball_class_and_objects.png" alt="A Ball class is like a general diagram, individual Ball objects are concrete instances of that class" style="width: 645px;"/></p>
 <p>In a way, the word <code>Ball</code> itself is a bit of data associated with an object, since we need some way to know that an object <code>x</code> is a <code>Ball</code>, and not, say, a <code>Car</code>. In Processing.R we recommend capital initials for class names (e.g. <code>Ball</code> rather than <code>ball</code>).</p>
 <blockquote>
 <p>Note: Capitaliing classes (<code>Ball</code>, not <code>ball</code>) is a coding convention. It is very consistently observed in some languages (like Processing / Java) and less in others (p5.js / Javascript, Processing.R / R). Don't be too surprised to see exceptions to this rule in R code!</p>
@@ -51,30 +51,33 @@
 <p>When talking about classes, some special terminology is also used. Functions that that are part of classes (and hence part of the objects of that class) are called <strong>methods</strong>. The variables belonging to each object are called <strong>instance variables</strong>, which hold different values for each <em>instance</em> of the class. In the figure above, <code>radius</code> has a different value for each Ball object.</p>
 <h3>Objects in R</h3>
 <p>This idea of classes serving to collect data and methods (not functions!) into single objects hasn't been around forever, and over the years different programming languages have captured the idea in different ways. Today, the most popular languages like Java, C++, Python, and even JavaScript have settled on a pattern where a class template is defined within a single chunk of code. If you've used any of these languages, this chunk of JavaScript might look familiar (if not, feel free to just skim):</p>
-<p>```
-// This code is JavaScript, not R...
+<pre><code>// This code is JavaScript, not R...
 class Ball(x, y, xs, yx, r, i) {
   this.xloc = x;
   this.yloc = y;
   this.xspeed = xs;
   this.yspeed = ys;
   this.radius = r;
-  this.id = i;</p>
-<p>this.move = function() {
+  this.id = i;
+
+  this.move = function() {
     this.xloc = this.xloc + this.xspeed;
     this.yloc = this.yloc + this.yspeed;
-  }</p>
-<p>this.display = function() {
+  }
+
+  this.display = function() {
     ellipse(this.xloc, this.yloc, this.radius, this.radius);
   }
-}</p>
-<p>var b1 = new Ball(55, 75, 2, -1, 20, "Ball1");
-var b2 = new Ball(107, 165, -3, 3.2, 10, "Ball2");</p>
-<p>b1.move();
+}
+
+var b1 = new Ball(55, 75, 2, -1, 20, "Ball1");
+var b2 = new Ball(107, 165, -3, 3.2, 10, "Ball2");
+
+b1.move();
 b1.display();
 b2.move();
 b2.display();
-```</p>
+</code></pre>
 <p>This code defines a <code>Ball</code> class (blueprint), creates two <code>Ball</code> objects <code>b1</code> and <code>b2</code>, and then asks each in turn to move itself then display itself... but that's enough JavaScript--this tutorial is supposed to be about R! Although modern versions of R can follow this same sort of coding pattern, it hasn't always, since R originally drew inspiration from the statistical language and functional languages Scheme and Lisp.</p>
 <p>Over the years, R has been graced with <em>three</em> different ways to define classes in code.</p>
 <ol>
@@ -83,53 +86,59 @@ b2.display();
 <li>Reference Classes (RC) - the most recently added, these are very similar to classes defined by Java, JavaScript, Python, C++, etc.</li>
 </ol>
 <p><strong>Processing.R supports S3 classes only</strong> -- S3 classes are the most commonly found in R code, and they are what will be covered in this tutorial.</p>
-<pre><code>Note: When looking at R code "in the wild" be careful not to mix S3, S4, and RC classes -- and keep in mind that only S3 is supported in Processing.R.
-</code></pre>
+<blockquote>
+<p>Note: When looking at R code "in the wild" be careful not to mix S3, S4, and RC classes -- and keep in mind that only S3 is supported in Processing.R.</p>
+</blockquote>
 <h3>Attributes and Lists</h3>
 <p>Before we can write some classes in R, we need to discuss a feature of R that is not found in many other languages: <strong>attributes</strong>. R attributes are a kind of "metadata" that we can attach to any other data. </p>
 <p>For these examples we will be experimenting with code in a Processing.R sketch inside the <code>setup</code> function, and periodically running the sketch to see the results.</p>
-<p>```
-setup &lt;- function() {
+<pre><code>setup &lt;- function() {
   exit()
 }
-````</p>
+</code></pre>
 <p>Let's create a random sample of 100 numbers using the <code>rnorm()</code> function:</p>
-<p><code>samp &lt;- rnorm(100, mean = 20, sd = 2)
-print(samp)</code></p>
+<pre><code>samp &lt;- rnorm(100, mean = 20, sd = 2)
+print(samp)
+</code></pre>
 <blockquote>
 <p>c(17.476707120743, 21.36868260950083, 17.8269424011346, 20.07978640322603, 21.12157543421291,... 100 elements total</p>
 </blockquote>
 <p>We may want to remember, for later use, what kind of data this is. We can do this by making up a "sampletype" attribute and adding it to our sample with the <code>attr()</code> function:</p>
-<p><code>attr(samp, "sampletype") &lt;- "Normal Sample"</code></p>
+<p>attr(samp, "sampletype") &lt;- "Normal Sample"</p>
 <p>Then, later, we can extract attributes:</p>
-<p><code>setup &lt;- function() {
+<pre><code>setup &lt;- function() {
   samp &lt;- rnorm(100, mean = 20, sd = 2)
   attr(samp, "sampletype") &lt;- "Normal Sample"
   print(samp)
   print("\n")
   print(attr(samp, "sampletype")) # Prints "Normal Sample"
   exit()
-}</code></p>
+}
+</code></pre>
 <p>Attributes are also how R stores class information. Let's define a numeric <strong>vector</strong> containing some information for a ball:</p>
-<p><code>setup &lt;- function() {
+<pre><code>setup &lt;- function() {
   b1 &lt;- c(55, 75, 2, -1, 20)       # xloc, yloc, xspeed, yspeed, radius
   attr(b1, "class") &lt;- "Ball"
   print(b1)
   print("\n")
   print(attr(b1, "class"))
   exit()
-}</code></p>
+}
+</code></pre>
 <p>Now, as far as R is concerned, <code>b1</code> is a <code>Ball</code> object! This is because <code>"class"</code> is an attribute that R treats specially to hold this information. This is so common that there's a special function <code>class()</code> just to set the class attribute of an object:</p>
-<p><code>class(b1) &lt;- "Ball"</code></p>
+<pre><code>class(b1) &lt;- "Ball"
+</code></pre>
 <p>We can assign attributes to any kind of data in R. Here we've used a numeric vector of 5 numbers to store data about the ball. This isn't too flexible--vectors (created with the <code>c()</code> function) can only store one type of data (numbers in this case) as a basic array. <strong>Lists</strong>, on the other hand, are more flexible: they can hold vectors of different kinds, and even other lists. Maybe we want to store ball data as a location vector, a speed vector, a radius number (actually a vector of length 1 in R), and an id:</p>
-<p><code>b1 &lt;- list(c(55, 75), c(2, -1), 20, "Ball1")
-class(b1) &lt;- "Ball"</code></p>
+<pre><code>b1 &lt;- list(c(55, 75), c(2, -1), 20, "Ball1")
+class(b1) &lt;- "Ball"
+</code></pre>
 <p>Another cool thing about lists (and vectors too, actually) is that list elements can have names:</p>
-<p><code>b1 &lt;- list(loc = c(55, 75), speed = c(2, -1),
-           radius = 20, id = "Ball1")
-class(b1) &lt;- "Ball"</code></p>
+<pre><code>b1 &lt;- list(loc = c(55, 75), speed = c(2, -1),
+          radius = 20, id = "Ball1")
+class(b1) &lt;- "Ball"
+</code></pre>
 <p>This way, we can work with elements by their name, using a <code>$</code>-sign.</p>
-<p><code>setup &lt;- function() {
+<pre><code>setup &lt;- function() {
   b1 &lt;- list(loc = c(55, 75), speed = c(2, -1), radius = 20, id = "Ball1")
   class(b1) &lt;- "Ball"
   print(b1)
@@ -140,124 +149,137 @@ class(b1) &lt;- "Ball"</code></p>
   print("\n")
   print(b1$loc[2])    # prints "215.0"
   exit()
-}</code></p>
+}
+</code></pre>
 <p>We can assign to new entries of a list by using a new name as well:</p>
-<p><code>b1$volume &lt;- pi * b1$radius ^ 2   # pi is built into R</code></p>
+<pre><code>b1$volume &lt;- pi * b1$radius ^ 2   # pi is built into R
+</code></pre>
 <p>And, since <code>loc</code> and <code>speed</code> are both vectors, and R is <em>vectorized</em> (most operations work on vectors in an element-by-element manner), we can do something like this to print where the ball will be next:</p>
-<p><code>print(b1$loc + b1$speed)   # prints 202, 214</code></p>
+<pre><code>print(b1$loc + b1$speed)   # prints 202, 214
+</code></pre>
 <p>By the way, <strong>constructor</strong> is the special name for a function that creates an object of the proper form.  Usually the function name is the same as the class name:</p>
-<p>```
-setup &lt;- function() {
+<pre><code>setup &lt;- function() {
   b1 &lt;- Ball(55, 75, 2, -2, 20, "Ball1")
   print(b1)
   exit()
-}</p>
-<p>Ball &lt;- function(x, y, xs, ys, r, i) {
+}
+
+Ball &lt;- function(x, y, xs, ys, r, i) {
   newb &lt;- list(loc = c(x, y), speed = c(xs, ys), 
-               radius = r, id = i)
+              radius = r, id = i)
   class(newb) &lt;- "Ball"
   return(newb)
 }
-```</p>
+</code></pre>
 <h3>Methods</h3>
 <p>The above covers how we can collect different kinds of data together, and assign a "class" to that collection. But what about the class functions--the methods--that we want to build to go along with the data? In the simplest case, we can just create a function. here's one that takes a Ball object, add the speed to the location, and returns it:</p>
-<p><code>move &lt;- function(someball) {
+<pre><code>move &lt;- function(someball) {
   someball$loc &lt;- someball$loc + someball$speed
   return(someball)
-}</code></p>
+}
+</code></pre>
 <p>To use it, we can create a Ball object, and call the function.</p>
-<p>```
-b1 &lt;- Ball(55, 75, 2, -1, 20, "Ball1")
-b2 &lt;- move(b1)</p>
-<p>print(b1$loc)   # prints 55, 75
+<pre><code>b1 &lt;- Ball(55, 75, 2, -1, 20, "Ball1")
+b2 &lt;- move(b1)
+
+print(b1$loc)   # prints 55, 75
 print(b2$loc)   # prints 202, 214
-```</p>
+</code></pre>
 <p>Notice that we've now got two ball objects, <code>b1</code> and <code>b2</code>, and they have different locations. This is because most R functions are <em>pass-by-value</em>, or, if it helps, "pass-by-copy." This means that inside the <code>move()</code> function the variable <code>someball</code> is effectively a <em>copy</em> of what was passed to the function; the function then modifies this copy and returns it. (Sidenote: many languages are not pass-by-value, and don't make copies in this way. R's Reference Classes operate more similarly to those languages.)</p>
 <p>If we want to modify the <code>b1</code> ball we can reassign the variable from the old ball object to the new one.</p>
-<p><code>b1 &lt;- move(b1)</code></p>
+<pre><code>b1 &lt;- move(b1)
+</code></pre>
 <p>R does a lot of work behind the scenes to make this copying as efficient as possible, so try not to stress about it. While we're at it, let's define a <code>display()</code> function:</p>
-<p><code>display &lt;- function(someball) {
+<pre><code>display &lt;- function(someball) {
   ellipse(someball$loc[1], someball$loc[2], 
           someball$radius, someball$radius)
-}</code></p>
+}
+</code></pre>
 <p>In order to make this actually display we will need to call if from the Processing.R <code>draw</code> loop function. Let's modify our sketch, adding <code>draw</code>, removing <code>exit()</code> from <code>setup</code> so that the draw window will stay open, and adding <code>noLoop()</code> to draw so that the sketch will draw once, then pause.</p>
-<p>```
-setup &lt;- function() {
+<pre><code>setup &lt;- function() {
   b1 &lt;- Ball(55, 75, 2, -1, 20, "Ball1")
   b1 &lt;- move(b1)
   print(b1$loc)   # prints 55, 75
-}</p>
-<p>draw &lt;- function() {
+}
+
+draw &lt;- function() {
   display(b1)
   noLoop()
-}</p>
-<p>Ball &lt;- function(x, y, xs, ys, r, i) {
+}
+
+Ball &lt;- function(x, y, xs, ys, r, i) {
   newb &lt;- list(loc = c(x, y), speed = c(xs, ys), 
-               radius = r, id = i)
+              radius = r, id = i)
   class(newb) &lt;- "Ball"
   return(newb)
-}</p>
-<p>move &lt;- function(someball) {
+}
+
+move &lt;- function(someball) {
   someball$loc &lt;- someball$loc + someball$speed
   return(someball)
-}</p>
-<p>display &lt;- function(someball) {
+}
+
+display &lt;- function(someball) {
   ellipse(someball$loc[1], someball$loc[2], 
           someball$radius, someball$radius)
 }
-```</p>
+</code></pre>
 <h3>Dispatch</h3>
 <p>We're getting closer. The trouble here is that there's nothing really "attaching" the <code>move()</code> and <code>display()</code> functions to <code>Ball</code> objects. This is a shame, because they'll only really work with <code>Ball</code> objects, not objects of other types.</p>
 <p>To motivate what we mean, we need to come up with some other type of object that could move and be displayed. How about a <code>Particle</code> (like a particle of pollen)? Particles will also have an x and y location, but each particle moves by randomly adjusting its location (so it wiggles), and we'll always draw them with a small radius of 2 pixels.</p>
-<p>```</p>
-<h1>Constructor</h1>
-<p>Particle &lt;- function(x, y) {
+<pre><code># Constructor
+Particle &lt;- function(x, y) {
   newp &lt;- list(loc = c(x, y))
   class(newp) &lt;- "Particle"
   return(newp)
-}</p>
-<h1>function for moving a particle</h1>
-<p>move &lt;- function(someparticle) {
+}
+
+# function for moving a particle
+move &lt;- function(someparticle) {
   someparticle$loc[1] &lt;- someparticle$loc[1] + rnorm(1, mean = 2)
   someparticle$loc[2] &lt;- someparticle$loc[2] + rnorm(1, mean = 2)
   return(someparticle)
-}</p>
-<h1>function for displaying a particle</h1>
-<p>display &lt;- function(someparticle) {
+}
+
+# function for displaying a particle
+display &lt;- function(someparticle) {
   ellipse(someparticle$loc[1], someparticle$loc[2], 2, 2)
 }
-```</p>
+</code></pre>
 <p>Now we can create a couple of particles, have them move, and display them:</p>
-<p>```
-p1 &lt;- Particle(400, 400)
-p2 &lt;- Particle(500, 500)</p>
-<p>p1 &lt;- move(p1)
-p2 &lt;- move(p2)</p>
-<p>display(p1)
+<pre><code>p1 &lt;- Particle(400, 400)
+p2 &lt;- Particle(500, 500)
+
+p1 &lt;- move(p1)
+p2 &lt;- move(p2)
+
+display(p1)
 display(p2)
-```</p>
+</code></pre>
 <p>But wait! We've defined functions <code>move()</code> and <code>display()</code>; do these overwrite the ones we wrote earlier for balls? Yes! And that's a problem.</p>
 <p>One solution is to make these functions class-specific (and remember, we call class-specific functions <em>methods</em>), by putting the name of the class as part of the function name:</p>
-<p>```</p>
-<h1>move method for Ball object</h1>
-<p>move.Ball &lt;- function(someball) {
+<pre><code># move method for Ball object
+move.Ball &lt;- function(someball) {
   someball$loc &lt;- someball$loc + someball$speed
   return(someball)
-}</p>
-<h1>move method for Particle objects</h1>
-<p>move.Particle &lt;- function(someparticle) {
+}
+
+# move method for Particle objects
+move.Particle &lt;- function(someparticle) {
   someparticle$loc[1] &lt;- someparticle$loc[1] + rnorm(1, mean = 0, sd = 2)
   someparticle$loc[2] &lt;- someparticle$loc[2] + rnorm(1, mean = 0, sd = 2)
   return(somparticle)
 }
-```</p>
-<pre><code>Note: In R, unlike in Java or JavaScript, the `.` character isn't very special: it can be used in variable and function names just like any other character. As we'll see though, it is necessary to use this naming scheme for class-specific methods.)
 </code></pre>
+<blockquote>
+<p>Note: In R, unlike in Java or JavaScript, the <code>.</code> character isn't very special: it can be used in variable and function names just like any other character. As we'll see though, it is necessary to use this naming scheme for class-specific methods.)</p>
+</blockquote>
 <p>Now we can say something like this without worry:</p>
-<p><code>p1 &lt;- move.Particle(p1)
-b1 &lt;- move.Ball(b1)</code></p>
+<pre><code>p1 &lt;- move.Particle(p1)
+b1 &lt;- move.Ball(b1)
+</code></pre>
 <p>To make our code cleaner, it would be nice if we could define a generic <code>move()</code> function, and if the parameter given had class <code>"Ball"</code> then it called <code>move.Ball()</code>, and if it had class <code>"Particle"</code> then it called <code>move.Particle()</code>. We could try something like this</p>
-<p><code>move &lt;- function(x) {
+<pre><code>move &lt;- function(x) {
   if(attr(x, "class") == "Ball") {
     answer &lt;- move.Ball(x)
     return(answer)
@@ -265,14 +287,14 @@ b1 &lt;- move.Ball(b1)</code></p>
     answer &lt;- move.Particle(x)
     return(answer)
   }
-}</code></p>
+}
+</code></pre>
 <p>That's ok, but it turns out this functionality is built into R. Here's the "official" way to do it.</p>
-<p>```</p>
-<h1>R definition for the generic function.</h1>
-<p>move &lt;- function(x) {
+<pre><code># R definition for the generic function.
+move &lt;- function(x) {
   UseMethod("move", x)
 }
-```</p>
+</code></pre>
 <p>The function <code>UseMethod()</code> does exactly what we want: it looks at the class of <code>x</code>, calls <code>move.&lt;class of x&gt;()</code> instead, and returns the answer. </p>
 <p>This is known as <strong>dispatch</strong>, and a function that "dispatches" to a method based on class information is called a <strong>generic</strong> function.</p>
 <hr />
@@ -283,18 +305,20 @@ b1 &lt;- move.Ball(b1)</code></p>
 <p>Note: Processing.R currently does not support multiple tabs in the PDE editing window -- all code must appear in the one main tab. Ideally, we would separate our code into three tabs -- the main code first, then the Ball code into its own tab and the Particle code into its own tab. For now we'll place all of the code into different sections of the main script tab and label those sections with code comments.</p>
 </blockquote>
 <p>We will also store all objects (both Balls and Particles) as elements of a single global <code>objects</code> list.</p>
-<p>```</p>
-<h6></h6>
-<h2>Main program code</h2>
-<h6></h6>
-<h1>global "objects" list to store Balls and Particles</h1>
-<p>objects &lt;- list()</p>
-<h1>settings: create window</h1>
-<p>settings &lt;- function() {
+<pre><code>#####################
+## Main program code
+#####################
+
+# global "objects" list to store Balls and Particles
+objects &lt;- list()
+
+# settings: create window
+settings &lt;- function() {
   size(400, 400)
-}</p>
-<h1>setup: add objects to objects list</h1>
-<p>setup &lt;- function() {
+}
+
+# setup: add objects to objects list
+setup &lt;- function() {
   # ball in upper-right, moving leftward &amp; down
   objects$b1 &lt;- Ball(350, 50, -1.5, 1.2, 15, "ball1")
   # ball in uppr-left, moving rightward &amp; down
@@ -303,87 +327,104 @@ b1 &lt;- move.Ball(b1)</code></p>
   objects$p1 &lt;- Particle(50, 350)
   # particle in lower-right
   objects$p2 &lt;- Particle(350, 350)
-}</p>
-<h1>draw: each frame, update each object</h1>
-<p>draw &lt;- function() {
+}
+
+# draw: each frame, update each object 
+draw &lt;- function() {
   background(255, 255, 255)
   display(objects$b1)
   display(objects$b2)
   display(objects$p1)
-  display(objects$p2)</p>
-<p>objects$b1 &lt;- move(objects$b1)
+  display(objects$p2)
+
+  objects$b1 &lt;- move(objects$b1)
   objects$b2 &lt;- move(objects$b2)
   objects$p1 &lt;- move(objects$p1)
-  objects$p2 &lt;- move(objects$p2)</p>
-<p># reset sketch every 300 frames
+  objects$p2 &lt;- move(objects$p2)
+
+  # reset sketch every 300 frames
   if(frameCount %% 300 == 0) {
     processing$setup()
   }
-}</p>
-<h6></h6>
-<h2>Ball class</h2>
-<h6></h6>
-<h1>constructor</h1>
-<p>Ball &lt;- function(x, y, xs, ys, r, i) {
+}
+
+##########################################
+## Ball class
+##########################################
+
+# constructor
+Ball &lt;- function(x, y, xs, ys, r, i) {
   newb &lt;- list(loc = c(x, y), speed = c(xs, ys), 
-               radius = r, id = i)</p>
-<p>class(newb) &lt;- "Ball"
+              radius = r, id = i)
+
+  class(newb) &lt;- "Ball"
   return(newb)
-}</p>
-<h1>display method</h1>
-<p>display.Ball &lt;- function(someball) {
+}
+
+# display method
+display.Ball &lt;- function(someball) {
   ellipse(someball$loc[1], someball$loc[2], 
           someball$radius, someball$radius)
-}</p>
-<h1>move method -- returns updated ball</h1>
-<p>move.Ball &lt;- function(someball) {
+}
+
+# move method -- returns updated ball
+move.Ball &lt;- function(someball) {
   someball$loc &lt;- someball$loc + someball$speed
   return(someball)
-}</p>
-<h6></h6>
-<h2>Particle class</h2>
-<h6></h6>
-<h1>constructor</h1>
-<p>Particle &lt;- function(x, y) {
+}
+
+#############################################
+## Particle class
+#############################################
+
+# constructor
+Particle &lt;- function(x, y) {
   newp &lt;- list(loc = c(x, y))
   class(newp) &lt;- "Particle"
   return(newp)
-}</p>
-<h1>display method</h1>
-<p>display.Particle &lt;- function(someparticle) {
+}
+
+# display method
+display.Particle &lt;- function(someparticle) {
   ellipse(someparticle$loc[1], someparticle$loc[2], 2, 2)
-}</p>
-<h1>move method</h1>
-<p>move.Particle &lt;- function(someparticle) {
+}
+
+# move method
+move.Particle &lt;- function(someparticle) {
   someparticle$loc[1] &lt;- someparticle$loc[1] + rnorm(1, mean = 0, sd = 2)
   someparticle$loc[2] &lt;- someparticle$loc[2] + rnorm(1, mean = 0, sd = 2)
   return(someparticle)
-}</p>
-<h6></h6>
-<h2>Generic functions</h2>
-<h6></h6>
-<p>move &lt;- function(x) {
+}
+
+#####################
+## Generic functions
+#####################
+
+move &lt;- function(x) {
   UseMethod("move", x)
-}</p>
-<p>display &lt;- function(x) {
+}
+
+display &lt;- function(x) {
   UseMethod("display", x)
 }
-```</p>
+</code></pre>
 <h3>Improvements</h3>
 <p>One obvious modification would be to use a for-loop to display and move each object; because we use the same generic <code>move()</code> and <code>display()</code> functions for both types of objects, we needn't be concerned about whether each object is a <code>Ball</code> or <code>Particle</code>.  Here we use <code>[[]]</code>-syntax to access list elements by index number. (With vectors we can use <code>[]</code>-syntax to identify elements, but with lists <code>[]</code> always references a <em>sub-list</em>, rather than the element stored at a particular location.)</p>
-<p><code>draw &lt;- function() {
+<pre><code>draw &lt;- function() {
   background(255, 255, 255)
   for(i in seq(1:length(objects))) {
     display(objects[[i]])
     objects[[i]] &lt;- move(objects[[i]])
   }
-}</code></p>
+}
+</code></pre>
 <p>Alternatively, we can use R's <code>lapply()</code> function, which <em>applies</em> a function to each element of a given list. If the function returns something, <code>lapply()</code> returns a list of the returned answers.</p>
-<p><code>draw &lt;- function() {
+<pre><code>draw &lt;- function() {
   background(255, 255, 255)
   lapply(objects, display)
   objects &lt;- lapply(objects, move)
-}</code></p>
+}
+</code></pre>
       </td>
     </tr>
   </table>
